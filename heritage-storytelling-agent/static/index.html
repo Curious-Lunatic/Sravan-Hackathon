@@ -3,79 +3,263 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Heritage Storytelling Agent</title>
+  <title>Heritage Storytelling Agent · Sarvam AI</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="/static/styles.css" />
 </head>
 <body>
+  <!-- Ambient background layers -->
+  <div class="bg-ambient">
+    <div class="bg-orb orb-1"></div>
+    <div class="bg-orb orb-2"></div>
+    <div class="bg-orb orb-3"></div>
+  </div>
   <div class="grain"></div>
-  <header class="masthead">
-    <p class="kicker">Sarvam archive studio</p>
-    <h1>Heritage Storytelling Agent</h1>
-    <p class="lede">Digitise a manuscript, transcribe an oral archive, then walk the same history as a story, a guided tour, and a voiced podcast.</p>
-  </header>
 
-  <main class="layout">
-    <section class="panel intake">
-      <h2>Bring in the archive</h2>
+  <!-- Sidebar / Left Panel -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="logo-mark">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+          <path d="M14 2C7.373 2 2 7.373 2 14s5.373 12 12 12 12-5.373 12-12S20.627 2 14 2z" fill="url(#logoGrad)"/>
+          <path d="M9 14c0-2.761 2.239-5 5-5s5 2.239 5 5-2.239 5-5 5" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round"/>
+          <circle cx="14" cy="14" r="2" fill="white"/>
+          <defs>
+            <linearGradient id="logoGrad" x1="2" y1="2" x2="26" y2="26" gradientUnits="userSpaceOnUse">
+              <stop stop-color="#c9692a"/>
+              <stop offset="1" stop-color="#8b3a0f"/>
+            </linearGradient>
+          </defs>
+        </svg>
+      </div>
+      <div class="logo-text">
+        <span class="logo-title">Heritage</span>
+        <span class="logo-sub">Storytelling Agent</span>
+      </div>
+    </div>
+
+    <div class="sidebar-divider"></div>
+
+    <!-- Archive Form -->
+    <div class="sidebar-section">
+      <p class="sidebar-label">New Archive</p>
       <form id="archive-form">
-        <label class="field">
-          <span>Manuscript scan or PDF</span>
-          <input type="file" name="manuscript" accept=".pdf,.png,.jpg,.jpeg" />
-        </label>
-        <label class="field">
-          <span>Oral archive audio</span>
-          <input type="file" name="oral_archive" accept="audio/*,.wav,.mp3,.m4a,.ogg,.flac,.webm" />
-        </label>
-        <label class="field">
-          <span>Or paste source text</span>
-          <textarea name="source_text" id="source-text" rows="8" placeholder="Inscription, court record, interview notes…"></textarea>
-        </label>
-        <label class="field">
-          <span>Tell it in</span>
+        <!-- Drop zone -->
+        <div class="dropzone" id="manuscript-zone">
+          <div class="dropzone-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+              <line x1="12" y1="18" x2="12" y2="12"/>
+              <line x1="9" y1="15" x2="15" y2="15"/>
+            </svg>
+          </div>
+          <div class="dropzone-text">
+            <span class="dropzone-main">Manuscript / Scan</span>
+            <span class="dropzone-sub">PDF, PNG, JPG — drop or click</span>
+          </div>
+          <input type="file" name="manuscript" accept=".pdf,.png,.jpg,.jpeg" class="dropzone-input" id="manuscript-input" />
+          <div class="dropzone-filename" id="manuscript-name"></div>
+        </div>
+
+        <div class="dropzone" id="audio-zone">
+          <div class="dropzone-icon">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/>
+              <path d="M19 10v2a7 7 0 0 1-14 0v-2M12 19v4M8 23h8"/>
+            </svg>
+          </div>
+          <div class="dropzone-text">
+            <span class="dropzone-main">Oral Archive</span>
+            <span class="dropzone-sub">WAV, MP3, M4A, OGG — drop or click</span>
+          </div>
+          <input type="file" name="oral_archive" accept="audio/*,.wav,.mp3,.m4a,.ogg,.flac,.webm" class="dropzone-input" id="audio-input" />
+          <div class="dropzone-filename" id="audio-name"></div>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="source-text">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+            Paste source text
+          </label>
+          <textarea name="source_text" id="source-text" rows="5" placeholder="Inscription, court record, interview notes, historical excerpt…"></textarea>
+        </div>
+
+        <div class="field-group">
+          <label class="field-label" for="target-language">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Tell it in
+          </label>
           <select name="target_language" id="target-language"></select>
-        </label>
-        <div class="actions">
-          <button type="button" class="ghost" id="sample-btn">Load Hampi sample</button>
-          <button type="submit" class="seal" id="run-btn">Open the archive</button>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-ghost" id="sample-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            Load Hampi sample
+          </button>
+          <button type="submit" class="btn-primary" id="run-btn">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Open the archive
+          </button>
         </div>
       </form>
-      <ol class="steps" id="steps" hidden>
-        <li data-step="ingest">Ingest</li>
-        <li data-step="translate">Translate</li>
-        <li data-step="compose">Compose</li>
-        <li data-step="narrate">Narrate</li>
-      </ol>
-      <p class="status" id="status-line"></p>
-    </section>
+    </div>
 
-    <section class="panel stage" id="stage">
-      <p class="empty" id="empty-state">The hall is waiting. Load a sample, or bring your own leaf, letter, or recording.</p>
-      <div id="workspace" hidden>
-        <div class="meta" id="archive-meta"></div>
-        <nav class="folios" role="tablist">
-          <button class="folio active" data-view="source">Source</button>
-          <button class="folio" data-view="story">Story</button>
-          <button class="folio" data-view="tour">Guided tour</button>
-          <button class="folio" data-view="podcast">Podcast</button>
-          <button class="folio" data-view="ask">Ask the archive</button>
-        </nav>
-        <div class="view" id="view-source"></div>
-        <div class="view" id="view-story" hidden></div>
-        <div class="view" id="view-tour" hidden></div>
-        <div class="view" id="view-podcast" hidden></div>
-        <div class="view" id="view-ask" hidden>
-          <form id="ask-form" class="ask">
-            <input type="text" id="ask-input" placeholder="What should a visitor notice first?" />
-            <button type="submit">Ask</button>
-          </form>
-          <div id="ask-thread" class="thread"></div>
+    <!-- Progress Steps -->
+    <div class="sidebar-section" id="progress-section" style="display:none">
+      <div class="sidebar-divider"></div>
+      <p class="sidebar-label">Processing</p>
+      <div class="pipeline" id="pipeline">
+        <div class="pipeline-step" data-step="ingest">
+          <div class="step-dot"></div>
+          <div class="step-info">
+            <span class="step-name">Ingest</span>
+            <span class="step-desc">Reading the archive</span>
+          </div>
+        </div>
+        <div class="pipeline-step" data-step="translate">
+          <div class="step-dot"></div>
+          <div class="step-info">
+            <span class="step-name">Translate</span>
+            <span class="step-desc">Rendering into language</span>
+          </div>
+        </div>
+        <div class="pipeline-step" data-step="compose">
+          <div class="step-dot"></div>
+          <div class="step-info">
+            <span class="step-name">Compose</span>
+            <span class="step-desc">Crafting experiences</span>
+          </div>
+        </div>
+        <div class="pipeline-step" data-step="narrate">
+          <div class="step-dot"></div>
+          <div class="step-info">
+            <span class="step-name">Narrate</span>
+            <span class="step-desc">Recording voices</span>
+          </div>
         </div>
       </div>
-    </section>
+      <p class="status-line" id="status-line"></p>
+    </div>
+
+    <!-- Sidebar footer -->
+    <div class="sidebar-footer">
+      <div class="powered-by">
+        <span>Powered by</span>
+        <strong>Sarvam AI</strong>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main stage -->
+  <main class="stage">
+    <!-- Empty state -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-hero">
+        <div class="empty-glyph">
+          <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+            <circle cx="32" cy="32" r="30" stroke="url(#emptyRing)" stroke-width="1.5" stroke-dasharray="4 3"/>
+            <path d="M20 28c0-6.627 5.373-12 12-12s12 5.373 12 12" stroke="url(#emptyArc)" stroke-width="2" stroke-linecap="round"/>
+            <circle cx="32" cy="32" r="4" fill="url(#emptyDot)"/>
+            <path d="M32 36v12" stroke="url(#emptyLine)" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M26 44h12" stroke="url(#emptyLine2)" stroke-width="1.5" stroke-linecap="round"/>
+            <defs>
+              <linearGradient id="emptyRing" x1="2" y1="2" x2="62" y2="62" gradientUnits="userSpaceOnUse"><stop stop-color="#c9692a" stop-opacity=".4"/><stop offset="1" stop-color="#8b3a0f" stop-opacity=".2"/></linearGradient>
+              <linearGradient id="emptyArc" x1="20" y1="16" x2="44" y2="28" gradientUnits="userSpaceOnUse"><stop stop-color="#c9692a"/><stop offset="1" stop-color="#e8904a"/></linearGradient>
+              <radialGradient id="emptyDot" cx="50%" cy="50%" r="50%"><stop stop-color="#e8904a"/><stop offset="1" stop-color="#c9692a"/></radialGradient>
+              <linearGradient id="emptyLine" x1="32" y1="36" x2="32" y2="48" gradientUnits="userSpaceOnUse"><stop stop-color="#c9692a" stop-opacity=".7"/><stop offset="1" stop-color="#c9692a" stop-opacity=".1"/></linearGradient>
+              <linearGradient id="emptyLine2" x1="26" y1="44" x2="38" y2="44" gradientUnits="userSpaceOnUse"><stop stop-color="#c9692a" stop-opacity=".5"/><stop offset="1" stop-color="#c9692a" stop-opacity=".1"/></linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <h2 class="empty-title">The archive awaits</h2>
+        <p class="empty-desc">Upload a manuscript scan, an oral recording, or paste text from a historical source. We'll transform it into an interactive story, guided tour, and voiced podcast — in any of 11 Indian languages.</p>
+        <div class="empty-features">
+          <div class="feature-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            Manuscript OCR
+          </div>
+          <div class="feature-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/></svg>
+            Audio Transcription
+          </div>
+          <div class="feature-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            11 Languages
+          </div>
+          <div class="feature-pill">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"/><path d="M15.54 8.46a5 5 0 0 1 0 7.07M19.07 4.93a10 10 0 0 1 0 14.14"/></svg>
+            Voice Narration
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Workspace (shown after processing) -->
+    <div id="workspace" style="display:none">
+      <!-- Archive meta banner -->
+      <div class="archive-banner" id="archive-banner">
+        <div class="banner-left">
+          <div class="banner-icon">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+          </div>
+          <div class="banner-meta" id="archive-meta"></div>
+        </div>
+        <div class="banner-lang" id="banner-lang"></div>
+      </div>
+
+      <!-- Tab navigation -->
+      <nav class="tab-nav" role="tablist">
+        <button class="tab-btn active" data-view="source" role="tab" aria-selected="true">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          Source
+        </button>
+        <button class="tab-btn" data-view="story" role="tab">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          Story
+        </button>
+        <button class="tab-btn" data-view="tour" role="tab">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="10" r="3"/><path d="M12 21.7C17.3 17 20 13 20 10a8 8 0 1 0-16 0c0 3 2.7 6.9 8 11.7z"/></svg>
+          Guided Tour
+        </button>
+        <button class="tab-btn" data-view="podcast" role="tab">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>
+          Podcast
+        </button>
+        <button class="tab-btn" data-view="ask" role="tab">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          Ask the Archive
+        </button>
+      </nav>
+
+      <!-- Tab views -->
+      <div class="tab-content">
+        <div class="view active" id="view-source"></div>
+        <div class="view" id="view-story" style="display:none"></div>
+        <div class="view" id="view-tour" style="display:none"></div>
+        <div class="view" id="view-podcast" style="display:none"></div>
+        <div class="view" id="view-ask" style="display:none">
+          <div class="ask-container">
+            <div class="ask-header">
+              <h3>Ask the Archive</h3>
+              <p>Query the source material and get answers from the archivist AI.</p>
+            </div>
+            <form id="ask-form" class="ask-form">
+              <input type="text" id="ask-input" placeholder="What should a visitor notice first?" autocomplete="off" />
+              <button type="submit">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+              </button>
+            </form>
+            <div id="ask-thread" class="ask-thread"></div>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
+
   <script src="/static/app.js"></script>
 </body>
 </html>

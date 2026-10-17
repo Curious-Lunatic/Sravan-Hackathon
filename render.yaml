@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: heritage-storytelling-agent
+    runtime: python
+    rootDir: heritage-storytelling-agent
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app:app --host 0.0.0.0 --port $PORT
+    envVars:
+      - key: SARVAM_API_KEY
+        sync: false          # Set this manually in the Render dashboard
+    disk:
+      name: heritage-data
+      mountPath: /app/data
+      sizeGB: 1

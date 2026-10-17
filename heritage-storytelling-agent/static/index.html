@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Heritage Storytelling Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div class="grain"></div>
+  <header class="masthead">
+    <p class="kicker">Sarvam archive studio</p>
+    <h1>Heritage Storytelling Agent</h1>
+    <p class="lede">Digitise a manuscript, transcribe an oral archive, then walk the same history as a story, a guided tour, and a voiced podcast.</p>
+  </header>
+
+  <main class="layout">
+    <section class="panel intake">
+      <h2>Bring in the archive</h2>
+      <form id="archive-form">
+        <label class="field">
+          <span>Manuscript scan or PDF</span>
+          <input type="file" name="manuscript" accept=".pdf,.png,.jpg,.jpeg" />
+        </label>
+        <label class="field">
+          <span>Oral archive audio</span>
+          <input type="file" name="oral_archive" accept="audio/*,.wav,.mp3,.m4a,.ogg,.flac,.webm" />
+        </label>
+        <label class="field">
+          <span>Or paste source text</span>
+          <textarea name="source_text" id="source-text" rows="8" placeholder="Inscription, court record, interview notes…"></textarea>
+        </label>
+        <label class="field">
+          <span>Tell it in</span>
+          <select name="target_language" id="target-language"></select>
+        </label>
+        <div class="actions">
+          <button type="button" class="ghost" id="sample-btn">Load Hampi sample</button>
+          <button type="submit" class="seal" id="run-btn">Open the archive</button>
+        </div>
+      </form>
+      <ol class="steps" id="steps" hidden>
+        <li data-step="ingest">Ingest</li>
+        <li data-step="translate">Translate</li>
+        <li data-step="compose">Compose</li>
+        <li data-step="narrate">Narrate</li>
+      </ol>
+      <p class="status" id="status-line"></p>
+    </section>
+
+    <section class="panel stage" id="stage">
+      <p class="empty" id="empty-state">The hall is waiting. Load a sample, or bring your own leaf, letter, or recording.</p>
+      <div id="workspace" hidden>
+        <div class="meta" id="archive-meta"></div>
+        <nav class="folios" role="tablist">
+          <button class="folio active" data-view="source">Source</button>
+          <button class="folio" data-view="story">Story</button>
+          <button class="folio" data-view="tour">Guided tour</button>
+          <button class="folio" data-view="podcast">Podcast</button>
+          <button class="folio" data-view="ask">Ask the archive</button>
+        </nav>
+        <div class="view" id="view-source"></div>
+        <div class="view" id="view-story" hidden></div>
+        <div class="view" id="view-tour" hidden></div>
+        <div class="view" id="view-podcast" hidden></div>
+        <div class="view" id="view-ask" hidden>
+          <form id="ask-form" class="ask">
+            <input type="text" id="ask-input" placeholder="What should a visitor notice first?" />
+            <button type="submit">Ask</button>
+          </form>
+          <div id="ask-thread" class="thread"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="/static/app.js"></script>
+</body>
+</html>
